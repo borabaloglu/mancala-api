@@ -12,7 +12,5 @@ export default logger(
     },
     prettyPrint: envConfig.isProduction ? false : { translateTime: true, levelFirst: true },
   },
-  envConfig.isProduction
-    ? pino.destination(`logs/${dayjs().format('YYYY-MM-DD-HH:mm:ss')}_${process.pid}.log`)
-    : null,
+  envConfig.isProduction ? pino.destination(`logs/${dayjs().format('YYYY-MM-DD-HH:mm:ss')}_${process.pid}.log`) : null,
 );
