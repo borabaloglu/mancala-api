@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-export default (error: any, req: Request, res: Response) => {
+export default (error: any, req: Request, res: Response, next: NextFunction) => {
   const code = error.status || error.code || (error.response && error.response.code) || 500;
 
+  // Prepare a detailed message to put it into server logs
   const message = {
     method: req.method,
     route: req.url,
