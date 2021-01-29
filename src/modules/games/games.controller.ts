@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { Request, Response, Router } from 'express';
 
+import gameConfig from '../../shared/configs/game.config';
 import playerAuth from '../../shared/middlewares/player-auth.middleware';
 import safeThrow from '../../shared/middlewares/safe-throw.middleware';
 import validationMiddleware from '../../shared/middlewares/validation.middleware';
@@ -16,6 +17,13 @@ import gamesService from './games.service';
 import gamesHelper from './games.helper';
 
 const router = Router();
+
+/**
+ * (GET) /configs -> Get game configs
+ */
+router.get('/configs', (req, res) => {
+  res.send(gameConfig);
+});
 
 /**
  * (POST) / -> Create new game
