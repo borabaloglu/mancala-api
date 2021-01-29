@@ -6,12 +6,13 @@
   "scripts": {
     "build": "rimraf dist && tsc --project ./",
     "commit": "git-cz",
-    "lint": "eslint \"src/**/*.ts\"",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
     "start": "npm run build && node dist/src/main.js",
     "start:dev": "export NODE_ENV=development && npm run start",
     "start:watch": "export NODE_ENV=development && npm run build && nodemon src/main.ts",
-    "start:prod": "export NODE_ENV=production && npm run start"
+    "start:prod": "export NODE_ENV=production && npm run start",
+    "play": "ts-node scripts/play.ts"
   },
   "dependencies": {
     "axios": "0.21.1",
