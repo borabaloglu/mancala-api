@@ -12,7 +12,7 @@ import gamesService from '../../modules/games/games.service';
 /**
  * Authenticates player if he/she can play in given game and game's current round
  */
-export default function playerAuth() {
+export default () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const game = await gamesService.findOneByPin(req.params.gamePin);
@@ -34,4 +34,4 @@ export default function playerAuth() {
       next(error);
     }
   };
-}
+};

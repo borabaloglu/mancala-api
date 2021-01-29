@@ -10,35 +10,35 @@ import { Game } from './interfaces/game.interface';
  * @param pits array of numbers that represents number of stones in player's pits
  * @returns number of stones
  */
-function calculateSumOfStones(pits: number[]): number {
+const calculateSumOfStones = (pits: number[]): number => {
   return pits
     .slice(0, gameConfig.mancalaIndex)
     .reduce(
       (calculatedNumberOfStones, numberOfStonesInCurrentPit) => calculatedNumberOfStones + numberOfStonesInCurrentPit,
       0,
     );
-}
+};
 
 /**
  * Collects all stones and put those in mancala
  * @param pits array of numbers that represents number of stones in player's pits
  * @returns updated pits
  */
-function collectStonesToMancala(pits: number[]): number[] {
+const collectStonesToMancala = (pits: number[]): number[] => {
   const numberOfStones = calculateSumOfStones(pits);
 
   const updatedPits = pits.fill(0, 0, gameConfig.mancalaIndex);
   updatedPits[gameConfig.mancalaIndex] += numberOfStones;
 
   return updatedPits;
-}
+};
 
 export default {
   /**
    * Creates a pin by given type
    * @param type
    */
-  createPin(type: 'game' | 'player1' | 'player2'): string {
+  createPin: (type: 'game' | 'player1' | 'player2'): string => {
     let prefix: string = '';
     switch (type) {
       case 'game': {
@@ -65,7 +65,7 @@ export default {
    * Generate default pits for player.
    * @param pits array of numbers that represents number of stones in player's pits
    */
-  generateDefaultPits(): number[] {
+  generateDefaultPits: (): number[] => {
     const pits = new Array(gameConfig.numberOfPits).fill(gameConfig.numberOfStonesPerPit);
     pits.splice(-1, 1, 0); // set number of stones in mancala as 0
 
@@ -79,7 +79,7 @@ export default {
    * @returns isPitOfTurnPlayer: is last stone dropped in turn player's pit
    * @returns lastPitIndex: the index of pit which last stone dropped in
    */
-  sowStones(board: Board, selectedPitIndex: number): { isPitOfTurnPlayer: boolean; lastPitIndex: number } {
+  sowStones: (board: Board, selectedPitIndex: number): { isPitOfTurnPlayer: boolean; lastPitIndex: number } => {
     let numberOfStonesInTurnPlayerHand = board.turnPlayerPits[selectedPitIndex];
     board.turnPlayerPits[selectedPitIndex] = 0;
 
@@ -121,7 +121,7 @@ export default {
    * @param board
    * @param lastPitIndex the index of pit which last stone dropped in
    */
-  applyEmptyPitRule(board: Board, lastPitIndex: number): void {
+  applyEmptyPitRule: (board: Board, lastPitIndex: number): void => {
     // Substract 1 to skip mancala, subtract lastPitIndex to find opposite index
     const oppositeIndexOfLastPit = gameConfig.mancalaIndex - 1 - lastPitIndex;
 
@@ -138,7 +138,7 @@ export default {
    * @param pits array of numbers that represents number of stones in player's pits
    * @returns true if player ran out of stones
    */
-  isRanOutOfStones(pits: number[]): boolean {
+  isRanOutOfStones: (pits: number[]): boolean => {
     return calculateSumOfStones(pits) === 0;
   },
 
@@ -146,7 +146,7 @@ export default {
    * Finishes the game and collects all stones in opponent's pits.
    * @param game
    */
-  finishGame(game: Game): void {
+  finishGame: (game: Game): void => {
     game.board[game.opponentPlayerPin] = collectStonesToMancala(game.board[game.opponentPlayerPin]);
     game.finishedAt = new Date();
   },
@@ -155,7 +155,7 @@ export default {
    * If turn player doesn't win a move, change turn and opponent players.
    * @param game
    */
-  setTurnAndOpponentPlayers(game: Game): void {
+  setTurnAndOpponentPlayers: (game: Game): void => {
     const turnPlayerPin = game.turnPlayerPin;
     game.turnPlayerPin = game.opponentPlayerPin;
     game.opponentPlayerPin = turnPlayerPin;
@@ -166,7 +166,7 @@ export default {
    * @param game
    * @returns winner player pin or null if draw
    */
-  findWinner(game: Game): string | null {
+  findWinner: (game: Game): string | null => {
     const numberOfStonesInTurnPlayerMancala = game.board[game.turnPlayerPin][gameConfig.mancalaIndex];
     const numberOfStonesInOpponentPlayerMancala = game.board[game.opponentPlayerPin][gameConfig.mancalaIndex];
 

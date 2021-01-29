@@ -18,8 +18,8 @@ export default {
    * Finds game record by pin
    * @param gamePin
    */
-  async findOneByPin(gamePin: string): Promise<Game> {
-    const game = await gameModel.findOne({ gamePin });
+  findOneByPin: async (gamePin: string): Promise<Game> => {
+    const game = await gameModel.findOne({ pin: gamePin });
 
     if (!validator.isDefined(game)) {
       throw new MissingRecordError({ gamePin });
@@ -32,7 +32,7 @@ export default {
    * Creates a new game.
    * @param dto
    */
-  async create(dto: CreateGameDto): Promise<{ gamePin: string; turnPlayerPin: string }> {
+  create: async (dto: CreateGameDto): Promise<{ gamePin: string; turnPlayerPin: string }> => {
     try {
       const gamePin = gamesHelper.createPin('game');
 
@@ -67,7 +67,7 @@ export default {
    * Joins player to game.
    * @param dto
    */
-  async join(dto: JoinGameDto): Promise<{ opponentPlayerPin: string }> {
+  join: async (dto: JoinGameDto): Promise<{ opponentPlayerPin: string }> => {
     const game = await gameModel.findOne({ pin: dto.gamePin });
 
     // Player can't join if game does not exist or game is already started
@@ -105,7 +105,7 @@ export default {
    * @param game
    * @returns updated game record
    */
-  async makeMove(dto: MakeMoveDto, game: Game): Promise<Game> {
+  makeMove: async (dto: MakeMoveDto, game: Game): Promise<Game> => {
     const board = {
       turnPlayerPits: game.board[game.turnPlayerPin],
       opponentPlayerPits: game.board[game.opponentPlayerPin],
