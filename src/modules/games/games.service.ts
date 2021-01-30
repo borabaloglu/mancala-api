@@ -3,6 +3,7 @@ import * as validator from 'class-validator';
 import gameConfig from '../../shared/configs/game.config';
 
 import { DatabaseActionError, MissingRecordError } from '../../shared/errors/database.error';
+import { SelectedEmptyPitError } from '../../shared/errors/game.error';
 
 import gamesHelper from './games.helper';
 import gameModel from './models/game.model';
@@ -110,6 +111,10 @@ export default {
       turnPlayerPits: game.board[game.turnPlayerPin],
       opponentPlayerPits: game.board[game.opponentPlayerPin],
     };
+
+    if (board.turnPlayerPits[dto.selectedPitIndex] === 0) {
+      throw new SelectedEmptyPitError();
+    }
 
     const { isPitOfTurnPlayer, lastPitIndex } = gamesHelper.sowStones(board, dto.selectedPitIndex);
 
