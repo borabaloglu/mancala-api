@@ -43,7 +43,7 @@ The game is over as soon as one of the sides run out of stones. The player who s
 
 ## Installation Guide
 
-### Prerequisties
+### Prerequisites
 
 - NodeJS (12 >=)
 - MongoDB (4 >=) (Required if local database will be used)
