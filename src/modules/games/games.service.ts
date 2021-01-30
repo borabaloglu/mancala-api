@@ -146,4 +146,16 @@ export default {
       throw new DatabaseActionError();
     }
   },
+
+  /**
+   * Removes game from database
+   * @param pin game pin
+   */
+  remove: async (pin: string): Promise<void> => {
+    try {
+      await gameModel.deleteOne({ pin });
+    } catch (error) {
+      throw new DatabaseActionError();
+    }
+  },
 };

@@ -47,7 +47,7 @@ router.post(
     req.body.gamePin = req.params.gamePin;
 
     const result = await gamesService.join(req.body);
-    res.send(result);
+    res.status(200).send(result);
   }),
 );
 
@@ -73,6 +73,18 @@ router.patch(
         wonAnotherMove: req.body.game.turnPlayerPin === req.body.playerPin,
       });
     }
+  }),
+);
+
+/**
+ * (DELETE) /:gamePin -> Quits from game (removes record from database)
+ */
+router.delete(
+  '/:gamePin',
+  playerAuth(),
+  safeThrow(async (req: Request, res: Response) => {
+    await gamesService.remove(req.params.gamePin);
+    res.status(200).send();
   }),
 );
 
