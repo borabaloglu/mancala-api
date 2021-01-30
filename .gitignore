@@ -45,3 +45,4 @@ lerna-debug.log*
 # Environment Files
 .env
 .dev.env
+.play.env
