@@ -3,12 +3,16 @@ import * as validator from 'class-validator';
 import axios, { AxiosInstance } from 'axios';
 import chalk from 'chalk';
 import columnify from 'columnify';
+import dotenv from 'dotenv';
+import envLoader from 'load-env-var';
 import _ from 'lodash';
 import readline from 'readline';
 
 import { promisify } from 'util';
 
 import gamesHelper from '../src/modules/games/games.helper';
+
+dotenv.config({ path: '.play.env' });
 
 // Define types
 type PlayerId = 1 | 2;
@@ -38,7 +42,7 @@ interface GameEnvironment {
 }
 
 // Define constants
-const BASE_URL: string = 'http://localhost:5000';
+const BASE_URL = envLoader.loadString('BASE_URL', { defaultValue: 'http://localhost:5000' });
 const P1_ID: PlayerId = 1;
 const P2_ID: PlayerId = 2;
 
@@ -194,6 +198,18 @@ const joinGame = async (gamePin: string): Promise<{ opponentPlayerPin: string }>
   };
 };
 
+const quitGame = async (gameEnvironment: GameEnvironment): Promise<void> => {
+  await axios.request({
+    url: `${BASE_URL}/games/${gameEnvironment.gamePin}`,
+    method: 'DELETE',
+    headers: {
+      'x-player-pin': gameEnvironment.turnPlayerPin,
+    },
+  });
+
+  process.exit(0);
+};
+
 /**
  * Creates a custom axios instances for player
  * @param gamePin
@@ -252,7 +268,10 @@ const setupGame = async (): Promise<GameEnvironment> => {
  * @param selectablePitIndexes
  * @returns selected pit index
  */
-const displayUserPitSelectionPrompt = async (selectablePitIndexes: number[]): Promise<number> => {
+const displayUserPitSelectionPrompt = async (
+  selectablePitIndexes: number[],
+  gameEnvironment: GameEnvironment,
+): Promise<number> => {
   let userInput: string;
   let selectedPitIndex: number;
 
@@ -263,7 +282,7 @@ const displayUserPitSelectionPrompt = async (selectablePitIndexes: number[]): Pr
     console.log(); // Log empty line
 
     if (userInput.toLowerCase() === 'q') {
-      process.exit();
+      await quitGame(gameEnvironment);
     }
 
     selectedPitIndex = +userInput;
@@ -293,7 +312,7 @@ const selectPit = async (gameEnvironment: GameEnvironment): Promise<number> => {
   let selectedPitIndex: number;
 
   if (gameEnvironment.turnPlayerId === P1_ID) {
-    selectedPitIndex = await displayUserPitSelectionPrompt(selectablePitIndexes);
+    selectedPitIndex = await displayUserPitSelectionPrompt(selectablePitIndexes, gameEnvironment);
   } else {
     console.log(chalk.bold.blue(`🤔 Hmm... Your opponent is thinking!\n`));
     await wait(1500);
