@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "4d839758-a927-4c31-9d10-a304212b826d",
+		"name": "Mancala API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();",
+							"pm.collectionVariables.set(\"game_pin\", body.gamePin);",
+							"pm.collectionVariables.set(\"player1_pin\", body.turnPlayerPin);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-player-pin",
+						"value": "6598660",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"playerName\": \"Player 1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/games",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();",
+							"pm.collectionVariables.set(\"player2_pin\", body.oppositePlayerPin);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"playerName\": \"Player 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/games/{{game_pin}}/join",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"games",
+						"{{game_pin}}",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player 1 - Make Move",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-player-pin",
+						"value": "{{player1_pin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"selectedPitIndex\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/games/{{game_pin}}/make-move",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"games",
+						"{{game_pin}}",
+						"make-move"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player 2 - Make Move",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-player-pin",
+						"value": "{{player2_pin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"selectedPitIndex\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/games/{{game_pin}}/make-move",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"games",
+						"{{game_pin}}",
+						"make-move"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Quit Game",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/games/{{game_pin}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"games",
+						"{{game_pin}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "game_pin",
+			"value": ""
+		},
+		{
+			"key": "player1_pin",
+			"value": ""
+		},
+		{
+			"key": "player2_pin",
+			"value": ""
+		}
+	]
+}
